@@ -4,7 +4,7 @@ setup(
     name='shared_camera',
     version='0.2',
     packages=['shared_camera'],
-    url='',
+    url='https://github.com/JarbasAl/shared_camera',
     license='MIT',
     author='jarbasAi',
     author_email='jarbasai@mailfence.com',
