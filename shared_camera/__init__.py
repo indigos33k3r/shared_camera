@@ -25,3 +25,27 @@ class CameraFeed(SyncManager):
         super(CameraFeed, self).__init__(address, authkey)
         self.register("get")
         self.connect()
+
+
+class Camera(object):
+    def __init__(self, address=("127.0.0.1", 5000), authkey=""):
+        self.address = address
+        self.authkey = authkey
+        self.is_main = False
+        self._camera_server = None
+        # can we connect?
+        try:
+            self._camera = CameraFeed(address, authkey)
+            self._camera.get()
+        except Exception as e:
+            # no camera server to connect, take the role of server
+            self._camera_server = SharedCamera(address=address,
+                                               authkey=authkey)
+            self.is_main = True
+            self._camera = CameraFeed(address, authkey)
+
+    def get(self):
+        return self._camera.get().copy()
+
+c = Camera()
+print c.get()
