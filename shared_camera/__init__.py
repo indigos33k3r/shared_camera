@@ -42,10 +42,20 @@ class Camera(object):
             self._camera_server = SharedCamera(stream=stream, address=address,
                                                authkey=authkey)
             self.is_main = True
-            self._camera = CameraFeed(address, authkey)
 
     def get(self):
+        if self.is_main:
+            return self._camera_server.get_stream().copy()
         return self._camera.get().copy()
 
-c = Camera()
-print c.get()
+    def stop_stream(self):
+        if self.is_main:
+            self._camera_server.stop_stream()
+
+    def start_stream(self):
+        if self.is_main:
+            self._camera_server.start_stream()
+
+    def shutdown(self):
+        if self.is_main:
+            self._camera_server.shutdown()
