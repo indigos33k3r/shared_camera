@@ -43,3 +43,4 @@ raspberry pi usage
     from imutils.video import VideoStream
 
     camera = SharedCamera(VideoStream(src=0, usePiCamera=True)
+    camera = Camera(VideoStream(src=0, usePiCamera=True)

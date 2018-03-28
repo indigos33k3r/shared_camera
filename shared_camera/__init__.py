@@ -28,7 +28,7 @@ class CameraFeed(SyncManager):
 
 
 class Camera(object):
-    def __init__(self, address=("127.0.0.1", 5000), authkey=""):
+    def __init__(self, stream=None, address=("127.0.0.1", 5000), authkey=""):
         self.address = address
         self.authkey = authkey
         self.is_main = False
@@ -39,7 +39,7 @@ class Camera(object):
             self._camera.get()
         except Exception as e:
             # no camera server to connect, take the role of server
-            self._camera_server = SharedCamera(address=address,
+            self._camera_server = SharedCamera(stream=stream, address=address,
                                                authkey=authkey)
             self.is_main = True
             self._camera = CameraFeed(address, authkey)
