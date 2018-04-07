@@ -48,8 +48,11 @@ class CameraServer(object):
         if frame is not None:
             q = self.server.get_queue()
             # keep one frame only
-            while q.qsize():
-                self.last_frame = q.get_nowait().copy()
+            try:
+                while q.qsize():
+                    self.last_frame = q.get_nowait().copy()
+            except Exception as e:
+                pass
             q.put_nowait(frame.copy())
             self.last_frame = frame.copy()
 
