@@ -23,24 +23,25 @@ and share the stream
 
 if you know there is no camera currently open, you can open a share camera
 
-    from shared_camera import SharedCamera
+    from shared_camera.server import CameraServer
 
-    c = SharedCamera()
-    c.start_stream()
-    frame = c.get_stream()
+    c = CameraServer()
+    frame = c.get_frame()
     c.stop_stream()
+    c.start_stream()
+    sleep(5)
+    c.shutdown()
 
 if you know a camera is open and need to get frames from it
 
-        from shared_camera import CameraFeed
+        from shared_camera.client import CameraClient
 
-    c = CameraFeed()
+    c = CameraClient()
     frame = c.get()
 
 raspberry pi usage
 
-    from shared_camera import SharedCamera
+    from shared_camera import Camera
     from imutils.video import VideoStream
 
-    camera = SharedCamera(VideoStream(src=0, usePiCamera=True)
     camera = Camera(VideoStream(src=0, usePiCamera=True)
