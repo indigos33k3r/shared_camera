@@ -4,6 +4,7 @@ from multiprocessing.managers import SyncManager
 class CameraClient(object):
     def __init__(self, host="", port=5011, authkey="666"):
         # create connected manager
+        self.send_notification("camera.connect")
         self.server = FrameServerClient(host, port, authkey)
         try:
             # do not require opencv in clients
@@ -13,6 +14,7 @@ class CameraClient(object):
                                               "no_feed.jpg"))
         except:
             self.last_frame = None
+        self.send_notification("camera.connected")
 
     def get_frame(self):
         # Get the queue object
@@ -21,6 +23,9 @@ class CameraClient(object):
             return q.get()
         except Exception as e:
             pass
+
+    def send_notification(self, notification):
+        print notification
 
 
 def FrameServerClient(HOST, PORT, AUTHKEY):

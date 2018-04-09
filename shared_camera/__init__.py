@@ -8,16 +8,16 @@ class Camera(object):
         self.is_main = False
         # can we start camera?
         try:
-            print "attempting to serve camera"
+
             # take role of camera server
             self._camera = CameraServer(stream, host, port, authkey,
                                         stock=stock)
             self.is_main = True
-            print "serving camera"
         except Exception as e:
-            print "failed to serve camera, attempting to connect"
             self._camera = CameraClient(host, port, authkey)
-            print "connected to camera"
+
+    def set_notification_callback(self, callback):
+        self._camera.send_notification = callback
 
     def get(self):
         return self._camera.get_frame()
@@ -32,5 +32,7 @@ class Camera(object):
 
     def shutdown(self):
         if self.is_main:
+            self.stop_stream()
             self._camera.shutdown()
+
 

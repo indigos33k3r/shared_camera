@@ -24,13 +24,19 @@ class CameraServer(object):
         self.t = None
         self.start_stream()
 
+    def send_notification(self, notification):
+        print notification
+
     def stop_stream(self):
+        self.send_notification("camera.stop")
         self.streaming = False
         if self.t is not None:
             self.t.join(3)
-        self.stream.start_stream()
+        self.stream.stop()
+        self.send_notification("camera.stopped")
 
     def start_stream(self):
+        self.send_notification("camera.open")
         self.streaming = True
         if self.t is not None:
             self.t.join(3)
@@ -38,7 +44,9 @@ class CameraServer(object):
             self.t = Thread(target=self.read_stream)
             self.t.setDaemon(True)
         self.t.start()
-        self.stream.start_stream()
+        self.stream.start()
+
+        self.send_notification("camera.opened")
 
     def read_stream(self):
         while self.streaming:

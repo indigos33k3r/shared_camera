@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='shared_camera',
-    version='0.6.2',
+    version='0.6.3',
     packages=['shared_camera'],
     install_requires=["imutils"],
     url='https://github.com/JarbasAl/shared_camera',
