@@ -2,8 +2,10 @@ from multiprocessing.managers import SyncManager
 
 
 class CameraClient(object):
-    def __init__(self, host="", port=5011, authkey="666"):
+    def __init__(self, host="", port=5011, authkey="666", callback=None):
         # create connected manager
+        if callback is not None:
+            self.send_notification = callback
         self.send_notification("camera.connect")
         self.server = FrameServerClient(host, port, authkey)
         try:

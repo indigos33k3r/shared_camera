@@ -9,8 +9,11 @@ from threading import Thread
 class CameraServer(object):
     def __init__(self, stream=None, host="", port=5011, authkey="666",
                  name="camera server",
-                 description="shared camera feed", stock=None):
+                 description="shared camera feed", stock=None, callback=None):
         stock = stock or join(dirname(__file__), "no_feed.jpg")
+
+        if callback is not None:
+            self.send_notification = callback
         # create connected manager
         self.server = CreateFrameServer(host, port, authkey, name,
                                         description)

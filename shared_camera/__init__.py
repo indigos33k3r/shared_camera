@@ -4,12 +4,13 @@ from shared_camera.client import CameraClient
 
 class Camera(object):
     def __init__(self, stream=None, host="", port=5011, authkey="",
-                 stock=None, autostart=True):
+                 stock=None, callback=None, autostart=True):
         self.stream = stream
         self.host = host
         self.port = port
         self.authkey = authkey
         self.stock = stock
+        self.callback = callback
         if autostart:
             self.start()
 
@@ -20,13 +21,12 @@ class Camera(object):
 
             # take role of camera server
             self._camera = CameraServer(self.stream, self.host, self.port,
-                                        self.authkey, stock=self.stock)
+                                        self.authkey, stock=self.stock,
+                                        callback=self.callback)
             self.is_main = True
         except Exception as e:
-            self._camera = CameraClient(self.host, self.port, self.authkey)
-
-    def set_notification_callback(self, callback):
-        self._camera.send_notification = callback
+            self._camera = CameraClient(self.host, self.port, self.authkey,
+                                        callback=self.callback)
 
     def get(self):
         return self._camera.get_frame()
